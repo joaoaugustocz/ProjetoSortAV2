@@ -1,0 +1,79 @@
+\documentclass[11pt,twoside,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[portuges]{babel}
+\usepackage[a4paper]{geometry}
+\geometry{tmargin=1.2cm,bmargin=1.7cm,lmargin=1.5cm,rmargin=1.5cm}
+\usepackage{graphicx}
+\usepackage{indentfirst}
+\usepackage{uniforTitle}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{booktabs}
+
+\evento{XXV ENCONTRO DE INICIAÇÃO À PESQUISA}
+\date{2025}
+
+\title{Computação Concorrente e Paralela: Fundamentos, Exemplos em Engenharia da Computação e Aplicações em Inteligência Artificial}
+
+\author[1]{João Augusto Carvalho Araújo}
+\affil[1]{Universidade de Fortaleza - Engenharia da Computação}
+
+\keywords{Computação Concorrente. Computação Paralela. Engenharia da Computação. Sistemas Embarcados. Inteligência Artificial.}
+
+\begin{document}
+\inserirtitulo
+\linespread{1.5}
+
+\section{Resumo}
+\par Este artigo apresenta um estudo experimental sobre o desempenho de algoritmos de ordenação em Java, implementados nas variantes sequencial e paralela. Foram avaliados Bubble Sort, Quick Sort, Merge Sort e Counting Sort, com vetores de 50\,000 elementos e cinco repetições, variando até 30 threads na execução paralela. Os tempos de execução foram registrados em arquivos CSV e analisados estatisticamente para identificar ganhos reais de paralelização. Os resultados indicam aceleração significativa para Quick Sort e Merge Sort ao utilizar o framework \textit{Fork/Join}, ao passo que Bubble Sort e Counting Sort sofreram degradações importantes devido à dependência sequencial e ao custo de sincronização.
+
+\section{Introdução}
+\par A estagnação do aumento de frequência dos processadores levou à adoção massiva de arquiteturas \textit{multicore} e de aceleradores especializados. Assim, o domínio da programação concorrente e paralela tornou-se fundamental para explorar plenamente os recursos disponíveis \cite{tanenbaum2015mos,herlihy2020art}. Algoritmos de ordenação são um terreno fértil para observar os impactos das estratégias de paralelização, pois combinam particionamento de dados, uso intensivo de memória e diferentes padrões de dependência entre elementos \cite{cormen2022clrs}.
+
+\par Este trabalho descreve a implementação de um framework de experimentação em Java que compara versões sequenciais e paralelas de quatro algoritmos clássicos de ordenação. O objetivo é elucidar, de maneira prática, como o paralelismo afeta cada algoritmo e quais fatores podem limitar o ganho de desempenho \cite{mccool2012structured}.
+
+\section{Metodologia}
+\par Foram implementadas classes dedicadas para cada algoritmo, seguindo boas práticas de encapsulamento e interfaces comuns para facilitar a instrumentação dos testes. As versões paralelas de Quick Sort e Merge Sort foram construídas sobre a API \textit{ForkJoinPool}, explorando a divisão recursiva de subproblemas. Bubble Sort e Counting Sort empregaram divisão do vetor em blocos com redução posterior, estratégia usual em varreduras paralelas \cite{mccool2012structured}.
+
+\par O \textit{framework} de testes gera vetores com distribuição aleatória controlada, executa múltiplas amostras por cenário e registra tempos em milissegundos. O ambiente de execução empregado possui processador com múltiplos núcleos lógicos, permitindo avaliar até 30 threads simultâneas. Todos os dados são persistidos em CSV e exibidos em uma interface Swing que apresenta, em tempo real, a média acumulada por algoritmo e modo de execução.
+
+\par Na etapa de análise, calculou-se a média de tempo para as cinco repetições de cada cenário, comparando o comportamento sequencial e o paralelo. A investigação concentrou-se no tamanho de vetor de 50\,000 elementos, que fornece carga suficiente para evidenciar diferenças sem provocar \textit{overhead} excessivo no ambiente de testes.
+
+\section{Resultados e Discussão}
+\par A Tabela~\ref{tab:resultados} resume os tempos médios obtidos, e as Figuras incluídas no repositório (pasta \texttt{docs/figuras}) ilustram os mesmos resultados em gráficos de barras.
+
+\begin{table}[H]
+    \centering
+    \caption{Tempo médio (ms) para vetores de 50\,000 elementos, cinco amostras e 30 threads na execução paralela.}
+    \label{tab:resultados}
+    \begin{tabular}{lccc}
+        \toprule
+        \multirow{2}{*}{Algoritmo} & \multicolumn{2}{c}{Tempo médio (ms)} & \multirow{2}{*}{Ganho (\%)} \\
+        \cmidrule(lr){2-3}
+         & Sequencial (1 thread) & Paralelo (30 threads) &  \\
+        \midrule
+        Bubble Sort   & 2572,4 & 7915,8 & -207,8 \\
+        Quick Sort    & 5,9    & 2,6    & +55,9 \\
+        Merge Sort    & 4,6    & 1,8    & +60,9 \\
+        Counting Sort & 0,4    & 8,2    & -1950,0 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\par Quick Sort e Merge Sort apresentaram ganhos expressivos, beneficiando-se da divisão equilibrada dos subproblemas e do baixo acoplamento entre as tarefas. O modelo de paralelização baseado em \textit{fork-join} permite que o trabalho seja distribuído eficientemente, reduzindo o tempo total de execução quando a sobrecarga de criação de tarefas é superada \cite{mccool2012structured}. Já Bubble Sort e Counting Sort sofreram degradações severas: o primeiro possui dependências intrínsecas entre elementos adjacentes, dificultando a paralelização efetiva, enquanto o segundo é limitado pelo custo de reduzir e aplicar as contagens parciais, gerando contenção sobre estruturas compartilhadas \cite{herlihy2020art}.
+
+\par Os resultados reforçam que a escolha do algoritmo e da técnica de paralelização deve considerar a natureza das dependências e o custo de sincronização. Em geral, algoritmos com estrutura divide-e-conquista e independência entre subproblemas apresentam ganhos reais, enquanto algoritmos com forte dependência sequencial ou fusões custosas podem ter desempenho inferior em ambientes altamente paralelos.
+
+\section{Conclusão}
+\par O estudo evidenciou que a paralelização não é uma panaceia: Quick Sort e Merge Sort obtiveram aceleração significativa com 30 threads, mas Bubble Sort e Counting Sort tiveram tempos maiores que as versões sequenciais. Isso demonstra a importância de avaliar o perfil algorítmico e o custo de coordenação antes de paralelizar um código. O \textit{framework} construído permite repetir experimentos com outros tamanhos de entrada, distribuições de dados e números de threads, servindo como plataforma para o ensino de paradigmas concorrentes e paralelos em Engenharia da Computação.
+
+\par Como trabalhos futuros, pretende-se incorporar métricas de utilização de CPU e memória, além de expandir a análise para ambientes heterogêneos com GPUs ou \textit{clusters}. Também é possível integrar técnicas de escalonamento adaptativo que selecionem automaticamente a estratégia mais eficiente de acordo com o tamanho do problema.
+
+\bibliography{referencias}
+\bibliographystyle{plain}
+
+\section*{Anexos}
+\par Código-fonte disponível em: \texttt{https://github.com/usuario/ProjetoSortAV2} (substituir pelo link definitivo do repositório).
+
+\end{document}
