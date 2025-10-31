@@ -1,5 +1,6 @@
 \documentclass[11pt,twoside,a4paper]{article}
 \usepackage[T1]{fontenc}
+%\usepackage[utf8x]{inputenc}
 \usepackage[utf8]{inputenc}
 \usepackage[portuges]{babel}
 \usepackage[a4paper]{geometry}
@@ -7,27 +8,53 @@
 \usepackage{graphicx}
 \usepackage{indentfirst}
 \usepackage{uniforTitle}
+\usepackage{lipsum} %Texto Lipsum (para testes)
 \usepackage{float}
-\usepackage{multirow}
 \usepackage{booktabs}
+\usepackage{multirow} 
 
+% Fonte similar à Arial / Melhor :)
+%\usepackage{helvet}
+%\renewcommand{\familydefault}{\sfdefault}
+
+
+%===========================
+% VARIÁVEIS DO DOCUMENTO
+%===========================
 \evento{XXV ENCONTRO DE INICIAÇÃO À PESQUISA}
 \date{2025}
 
-\title{Computação Concorrente e Paralela: Fundamentos, Exemplos em Engenharia da Computação e Aplicações em Inteligência Artificial}
+\title{Análise de Desempenho de Algoritmos de Ordenação em Ambientes Paralelos}
 
-\author[1]{João Augusto Carvalho Araújo}
+\author[1]{João Augusto Carvalho Araújo}%\thanks{Estudante do curso de Engenharia da Computação}}
+
 \affil[1]{Universidade de Fortaleza - Engenharia da Computação}
+%\affil[2]{Faculdade Católica de Fortaleza - Engenharia Elétrica}
+
+%\contatoemail{apresentador@email.com}
 
 \keywords{Computação Concorrente. Computação Paralela. Engenharia da Computação. Sistemas Embarcados. Inteligência Artificial.}
 
+
+
+%--- INICIO ---
 \begin{document}
 \inserirtitulo
-\linespread{1.5}
+\linespread{1.5}% Espaçamento 1.5 (como no word)
 
+%==================================
+% RESUMO
+%==================================
 \section{Resumo}
 \par Este artigo apresenta um estudo experimental sobre o desempenho de algoritmos de ordenação em Java, implementados nas variantes sequencial e paralela. Foram avaliados Bubble Sort, Quick Sort, Merge Sort e Counting Sort, com vetores de 50\,000 elementos e cinco repetições, variando até 30 threads na execução paralela. Os tempos de execução foram registrados em arquivos CSV e analisados estatisticamente para identificar ganhos reais de paralelização. Os resultados indicam aceleração significativa para Quick Sort e Merge Sort ao utilizar o framework \textit{Fork/Join}, ao passo que Bubble Sort e Counting Sort sofreram degradações importantes devido à dependência sequencial e ao custo de sincronização.
 
+
+%==================================
+% INTRODUÇÃO
+%==================================
+%==================================
+% INTRODUÇÃO
+%==================================
 \section{Introdução}
 \par A estagnação do aumento de frequência dos processadores levou à adoção massiva de arquiteturas \textit{multicore} e de aceleradores especializados. Assim, o domínio da programação concorrente e paralela tornou-se fundamental para explorar plenamente os recursos disponíveis \cite{tanenbaum2015mos,herlihy2020art}. Algoritmos de ordenação são um terreno fértil para observar os impactos das estratégias de paralelização, pois combinam particionamento de dados, uso intensivo de memória e diferentes padrões de dependência entre elementos \cite{cormen2022clrs}.
 
@@ -70,10 +97,15 @@
 
 \par Como trabalhos futuros, pretende-se incorporar métricas de utilização de CPU e memória, além de expandir a análise para ambientes heterogêneos com GPUs ou \textit{clusters}. Também é possível integrar técnicas de escalonamento adaptativo que selecionem automaticamente a estratégia mais eficiente de acordo com o tamanho do problema.
 
+
+
+
+
 \bibliography{referencias}
-\bibliographystyle{plain}
+
 
 \section*{Anexos}
-\par Código-fonte disponível em: \texttt{https://github.com/usuario/ProjetoSortAV2} (substituir pelo link definitivo do repositório).
+\par Código-fonte disponível em: \texttt{https://github.com/joaoaugustocz/ProjetoSortAV2} (substituir pelo link definitivo do repositório).
 
+%--- FIM ---
 \end{document}

@@ -49,4 +49,4 @@ Quick Sort e Merge Sort demonstraram ganhos expressivos com paralelização, ref
 \[4] M. Herlihy e N. Shavit, *The Art of Multiprocessor Programming*, 2. ed., Morgan Kaufmann, 2020.
 
 ## Anexos – Códigos das implementações
-Repositório com o código-fonte e instruções de execução: <https://github.com/usuario/ProjetoSortAV2> (substitua pelo link definitivo do seu repositório).
+Repositório com o código-fonte e instruções de execução: <https://github.com/joaoaugustocz/ProjetoSortAV2> (substitua pelo link definitivo do seu repositório).
